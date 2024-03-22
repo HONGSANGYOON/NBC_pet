@@ -18,6 +18,8 @@ interface ProductsProps {
   renderData: Item[];
   setRenderData: React.Dispatch<React.SetStateAction<Item[]>>;
   page: number;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function Products({
@@ -28,6 +30,8 @@ function Products({
   renderData,
   setRenderData,
   page,
+  isLoading,
+  setIsLoading,
 }: ProductsProps): JSX.Element {
   const navigate = useNavigate();
   const moveToDeatailPageHandler = (item: any) => {
@@ -56,7 +60,6 @@ function Products({
               <STextBox>
                 <SProductName>{Product.name}</SProductName>
                 <SProductPrice>{`가격: ${Product.price.toLocaleString()}원`}</SProductPrice>
-                {/* <button onClick={() => moveToDeatailPageHandler(Product)}>구매하기</button> */}
               </STextBox>
             </SItemBox>
           ))}

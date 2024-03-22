@@ -4,6 +4,7 @@ import Category from '../components/shopping/Category';
 import Products from '../components/shopping/products';
 import { collection, query, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase';
+import Loading from './Loading';
 
 interface Item {
   id: number;
@@ -40,8 +41,18 @@ function Shopping() {
   const [page, setPage] = useState<number>(1);
   //가격순,최신순을 위한 정보(최신순,가격순을 필터릴을통해 나온 데이터를 다시 UI에 보여주기위해서 필요한 state)
   const [renderData, setRenderData] = useState<Item[]>([]);
+  //스켈레톤UI를 위한 정보
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  console.log('itemsData', itemsData);
+  const skeletonUi = () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    skeletonUi();
+  }, []);
 
   useEffect(() => {
     fetchData().then(setItemsData);
@@ -60,6 +71,18 @@ function Shopping() {
     setRenderData(filteredItmes);
   }, [selectedCategory, selectedType, itemsData]);
 
+  useEffect(() => {
+    skeletonUi();
+  }, []);
+
+  //스켈레톤UI 컴포넌트 갖고오기
+  if (isLoading) {
+    return (
+      <>
+        <Loading></Loading>
+      </>
+    );
+  }
   return (
     <>
       <SComponentsContainer>
@@ -68,6 +91,8 @@ function Shopping() {
           setSelectedCategory={setSelectedCategory}
           selectedType={selectedType}
           setSelectedType={setSelectedType}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
         <Products
           setSelectedCategory={setSelectedCategory}
@@ -77,6 +102,8 @@ function Shopping() {
           page={page}
           selectedCategory={selectedCategory}
           selectedType={selectedType}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
       </SComponentsContainer>
     </>

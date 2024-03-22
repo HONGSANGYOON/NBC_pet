@@ -11,7 +11,7 @@ import QuestionAndAnswer from '../components/shoppingDetail/QuestionAndAnswer';
 import { collection, setDoc, getDocs, query, where, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
 import { FaHeart } from 'react-icons/fa';
-// import logo from '../../assets/images/logo.png';
+import Loading from './Loading';
 
 function ShoppingDetail() {
   //받아온 renderData
@@ -20,7 +20,17 @@ function ShoppingDetail() {
   //수량체크
   const [quantity, setQuantity] = useState<number>(1);
   const [totalPrice, setTotalPrice] = useState<any>(item.price);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const skeletonUi = () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    skeletonUi();
+  }, []);
   //수량 +,-기능
   const onclickQuantityHandler = (num: number) => {
     if (quantity + num >= 1) {
@@ -165,7 +175,13 @@ function ShoppingDetail() {
       </>
     );
   }
-
+  if (isLoading) {
+    return (
+      <>
+        <Loading></Loading>
+      </>
+    );
+  }
   return (
     <>
       <SProductContainer>

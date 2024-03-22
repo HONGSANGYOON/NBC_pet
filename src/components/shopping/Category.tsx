@@ -7,6 +7,8 @@ interface CategoryProps {
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
   selectedType: string;
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CATEGORIES: string[] = ['강아지', '고양이', '그외'];
@@ -21,6 +23,8 @@ function Category({
   setSelectedCategory,
   selectedType,
   setSelectedType,
+  isLoading,
+  setIsLoading,
 }: CategoryProps): JSX.Element {
   const navigate = useNavigate();
 
